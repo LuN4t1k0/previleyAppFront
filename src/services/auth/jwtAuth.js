@@ -1,7 +1,9 @@
 import jwtAxios from "axios";
+import { API_DEV, API_PROD } from "config/environment";
+
 
 const jwtAuthAxios = jwtAxios.create({
-    baseURL: "http://localhost:5000/api/v1/",
+    baseURL: "http://localhost:3000/api/v1",
     headers: {
         'Content-Type': 'application/json'
     }
@@ -18,13 +20,9 @@ jwtAuthAxios.interceptors.response.use(
 );
 
 export const setAuthToken = (token) => {
-    if(token) {
-        jwtAuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-        sessionStorage.setItem('token', token);
-    } else {
-        delete jwtAuthAxios.defaults.headers.common['Authorization'];
-        sessionStorage.removeItem('token');
-    }
+    jwtAuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    sessionStorage.setItem('token', token);
+    
 };
 
 export const getAuthToken = () => {
