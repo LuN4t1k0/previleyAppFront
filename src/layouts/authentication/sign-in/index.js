@@ -36,7 +36,7 @@ import authServices from "../../../services/auth-services";
 
 // Image
 const bgImage =
-  "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg";
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjP3p1tsZSaYHv34wcTv0ZiWI9_SMkv0Fw2OGENkbhhFH6GuD-nKTp5feQ5rzOwO2RwA&usqp=CAU";
 
 function Illustration() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -79,9 +79,9 @@ function Illustration() {
       description="Enter your email and password to sign in"
       illustration={{
         image: bgImage,
-        title: '"Attention is the new currency"',
+        title: 'Titulo Epico',
         description:
-          "The more effortless the writing looks, the more effort the writer actually put into the process.",
+          "Subtitulo Epico",
       }}
     >
       
@@ -99,18 +99,19 @@ function Illustration() {
               size="large" />
           </ArgonBox>
         <ArgonBox display="flex" alignItems="center">
-          <Switch checked={rememberMe} onChange={handleSetRememberMe} />
+          <Switch color={"secondary"} checked={rememberMe} onChange={handleSetRememberMe} />
           <ArgonTypography
             variant="button"
             fontWeight="regular"
             onClick={handleSetRememberMe}
             sx={{ cursor: "pointer", userSelect: "none" }}
+            
           >
             &nbsp;&nbsp;Remember me
           </ArgonTypography>
         </ArgonBox>
         <ArgonBox mt={4} mb={1}>
-          <ArgonButton type="submit" color="info" size="large" fullWidth>
+          <ArgonButton type="submit" color="primary" size="large" fullWidth>
             Sign In
           </ArgonButton>
         </ArgonBox>
@@ -122,7 +123,7 @@ function Illustration() {
               component={Link}
               to="/authentication/sign-up"
               variant="button"
-              color="info"
+              color="primary"
               fontWeight="medium"
             >
               Sign up

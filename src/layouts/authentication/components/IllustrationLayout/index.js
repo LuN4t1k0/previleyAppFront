@@ -72,37 +72,28 @@ function IllustrationLayout({ color, header, title, description, button, illustr
               component="img"
               src={illustration.image}
               alt="background"
-              width="100%"
+              width="90%"
               position="absolute"
-              top={0}
+              top={200}
               left={0}
             />
-            <ArgonBox
-              bgColor={color}
-              variant="gradient"
-              width="100%"
-              height="100%"
-              position="absolute"
-              topl={0}
-              left={0}
-              opacity={0.7}
-            />
-            <ArgonBox position="relative">
+            
+            {/* <ArgonBox position="relative">
               {illustration.title && (
                 <ArgonBox mt={6} mb={1}>
-                  <ArgonTypography variant="h4" color="white" fontWeight="bold">
+                  <ArgonTypography variant="h4" color="info" fontWeight="bold">
                     {illustration.title}
                   </ArgonTypography>
                 </ArgonBox>
               )}
               {illustration.description && (
                 <ArgonBox mb={1}>
-                  <ArgonTypography variant="body2" color="white">
+                  <ArgonTypography variant="body2" color="info">
                     {illustration.description}
                   </ArgonTypography>
                 </ArgonBox>
               )}
-            </ArgonBox>
+            </ArgonBox> */}
           </ArgonBox>
         </Grid>
       </Grid>
@@ -122,7 +113,7 @@ IllustrationLayout.defaultProps = {
 
 // Typechecking props for the IllustrationLayout
 IllustrationLayout.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark", "transparent"]),
   header: PropTypes.node,
   title: PropTypes.string,
   description: PropTypes.string,
