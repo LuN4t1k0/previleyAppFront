@@ -68,14 +68,25 @@ function IllustrationLayout({ color, header, title, description, button, illustr
             px={13}
             sx={{ overflow: "hidden" }}
           >
-            <ArgonBox
+            
+              {/* <ArgonBox
+                component="img"
+                src={illustration.image}
+                alt="background"
+                width="90%"
+                position="center"
+                top={0}
+                left={0}
+              /> */}
+              <ArgonBox
               component="img"
-              src={illustration.image}
-              alt="background"
-              width="90%"
+              src={"https://www.previley.cl/wp-content/uploads/2021/11/b3.png"}
+              width="100%"
+              height="100%"
               position="absolute"
-              top={200}
+              topl={0}
               left={0}
+              opacity={1}
             />
             
             {/* <ArgonBox position="relative">

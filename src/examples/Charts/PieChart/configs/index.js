@@ -37,7 +37,7 @@ function configs(labels, datasets) {
       labels,
       datasets: [
         {
-          label: datasets.label,
+          label: datasets[0].label,
           weight: 9,
           cutout: 0,
           tension: 0.9,
@@ -45,7 +45,7 @@ function configs(labels, datasets) {
           borderWidth: 2,
           backgroundColor: backgroundColors,
           fill: false,
-          data: datasets.data,
+          data: datasets[0].data,
         },
       ],
     },

@@ -61,12 +61,12 @@ function Illustration() {
     console.log("payload", payload);
     
     try {
-      authServices.signIn(payload).then((response) => {
+      /* authServices.signIn(payload).then((response) => {
         console.log("response", response);
         sessionStorage.setItem("token", response.token);
         navigate('/dashboard');
-      });
-      
+      }); */
+      navigate('/dashboard');
     } catch ({ response: { data: message } }) {
       alert("Error al iniciar sesión 🙁");
     }

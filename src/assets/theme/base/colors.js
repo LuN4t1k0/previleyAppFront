@@ -104,8 +104,8 @@ const colors = {
     },
 
     secondary: {
-      main: "#627594",
-      state: "#a8b8d8",
+      main: "#e84c4f",
+      state: "#e84c4f",
     },
 
     info: {
