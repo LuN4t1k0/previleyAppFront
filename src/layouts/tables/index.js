@@ -15,8 +15,8 @@ Coded by www.creative-tim.com
 import React, { useState, useEffect } from 'react';
 // @mui material components
 
-import {InputLabel, Card, MenuItem, FormControl, Select } from '@mui/material';
-
+import {InputLabel, Card, MenuItem, FormControl, Select, CircularProgress } from '@mui/material';
+import { saveAs } from 'file-saver';
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
@@ -45,6 +45,17 @@ function Tables() {
 
   const handleChange = (event) => {
     setAge(event.target.value);
+  };
+
+  const handleDownload = async () => {
+    try {
+      const data = licenciasServices.downloadExcel();
+      const blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+      saveAs(blob, 'archivo.xlsx');
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   useEffect(() => {
@@ -78,6 +89,7 @@ function Tables() {
           <Card>
           <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <ArgonTypography variant="h6">Licencias Medicas</ArgonTypography>
+              
           </ArgonBox>
           <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
           
@@ -204,13 +216,18 @@ function Tables() {
               {Loading ? (
                 <ArgonBox display="flex" justifyContent="center" alignItems="center" p={3}>
                   <ArgonTypography variant="h6">Loading...</ArgonTypography>
+                  <CircularProgress color='secondary' />
                 </ArgonBox>
                 
               ) : (
                 <Table columns={columns} rows={rows} />
+                
               )}
-              
+              <ArgonButton  color="secondary" size="medium" sx={{ m: 1,minWidth: 120}} onClick={handleDownload}>
+                  Descargar Excel
+              </ArgonButton>
             </ArgonBox>
+
           </Card>
         </ArgonBox>
         
