@@ -32,9 +32,9 @@ import ArgonTypography from "components/ArgonTypography";
 import configs from "examples/Charts/PieChart/configs";
 
 function PieChart({ title, description, height, chart }) {
-  console.log("chart", chart.datasets)
+  
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
-  console.log("data", data)
+  
   const renderChart = (
     <ArgonBox p={2}>
       {title || description ? (

@@ -14,11 +14,13 @@ Coded by www.creative-tim.com
 */
 import React, { useState, useEffect } from 'react';
 // @mui material components
-import Card from "@mui/material/Card";
+
+import {InputLabel, Card, MenuItem, FormControl, Select } from '@mui/material';
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
+import ArgonButton from "components/ArgonButton";
 
 // Argon Dashboard 2 MUI examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -39,6 +41,11 @@ function Tables() {
   const [rows, setRows] = useState([]);	
   const [columns, setColumns] = useState([]);
   const [Loading, setLoading] = useState(false);
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
   useEffect(() => {
       setLoading(true);
@@ -69,9 +76,121 @@ function Tables() {
       <ArgonBox py={3}>
         <ArgonBox mb={3}>
           <Card>
-            <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+          <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <ArgonTypography variant="h6">Licencias Medicas</ArgonTypography>
+          </ArgonBox>
+          <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+          
+            <ArgonBox component="form" /* onSubmit={handleSubmit(onSubmit)} */>
+            <div>
+              
+                <FormControl sx={{ m: 1,minWidth: 120}}>
+                
+                  <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={age}
+                      onChange={handleChange}
+                      autoWidth
+                      label="Age"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Twenty</MenuItem>
+                      <MenuItem value={21}>Twenty one</MenuItem>
+                      <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl sx={{ m: 1,minWidth: 120}}>
+                  <InputLabel id="demo-simple-select-autowidth-label">DOS</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={age}
+                      onChange={handleChange}
+                      autoWidth
+                      label="Age"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Twenty</MenuItem>
+                      <MenuItem value={21}>Twenty one</MenuItem>
+                      <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    </Select>            
+                
+                  
+                </FormControl>
+                <FormControl sx={{ m: 1,minWidth: 120}}>
+                  <InputLabel id="demo-simple-select-autowidth-label">DOS</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={age}
+                      onChange={handleChange}
+                      autoWidth
+                      label="Age"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Twenty</MenuItem>
+                      <MenuItem value={21}>Twenty one</MenuItem>
+                      <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    </Select>            
+                
+                  
+                </FormControl>
+                <FormControl sx={{ m: 1,minWidth: 120}}>
+                  <InputLabel id="demo-simple-select-autowidth-label">DOS</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={age}
+                      onChange={handleChange}
+                      autoWidth
+                      label="Age"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Twenty</MenuItem>
+                      <MenuItem value={21}>Twenty one</MenuItem>
+                      <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    </Select>            
+                
+                  
+                </FormControl>
+                <FormControl sx={{ m: 1,minWidth: 120}}>
+                  <InputLabel id="demo-simple-select-autowidth-label">DOS</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={age}
+                      onChange={handleChange}
+                      autoWidth
+                      label="Age"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Twenty</MenuItem>
+                      <MenuItem value={21}>Twenty one</MenuItem>
+                      <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    </Select>            
+                
+                  
+                </FormControl>
+                <ArgonButton type="submit" color="secondary" size="medium" sx={{ m: 1,minWidth: 120}}>
+                  Filtrar
+                </ArgonButton>
+              </div>
+              
             </ArgonBox>
+          </ArgonBox>
+            
             <ArgonBox
               sx={{
                 "& .MuiTableRow-root:not(:last-child)": {
