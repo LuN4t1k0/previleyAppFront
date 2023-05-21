@@ -14,7 +14,6 @@ Coded by www.creative-tim.com
 */
 import React, { useState, useEffect } from 'react';
 // @mui material components
-import { estadoLicenciaMedica } from "utils/enum";
 import {InputLabel, Card, MenuItem, FormControl, Select, CircularProgress } from '@mui/material';
 import { saveAs } from 'file-saver';
 // Argon Dashboard 2 MUI components
@@ -27,10 +26,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
-import licenciasServices from "services/licencias-services";
+import morasServices from 'services/mora-services';
 
 // Data
-import authorsTableData from "./data/authorsTableData";
+import morasTableData from "./data/morasTableData";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
 
@@ -47,10 +46,11 @@ function Tables() {
     setAge(event.target.value);
   };
 
-  const handleDownload = async () => {
+const handleDownload = async () => {
     try {
-      const data = await licenciasServices.downloadExcel();
-      const blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+      const data = await morasServices.downloadExcel();
+      
+      const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
       saveAs(blob, 'archivo.xlsx');
     } catch (error) {
       console.log(error);
@@ -62,9 +62,9 @@ function Tables() {
       setLoading(true);
       const getTable = async () => {
         try {
-          const data = await licenciasServices.getAllLicencias();
+          const data = await morasServices.getAllMoras();
           console.log("data ", data);        
-          const {Columns, Rows} = await authorsTableData(data);
+          const {Columns, Rows} = await morasTableData(data);
           console.log("columns1 ", Columns);
           setColumns(Columns);
           setRows(Rows);

@@ -13,7 +13,7 @@ import team4 from "assets/images/team-4.jpg";
 
 
 
-function Empleado({ image, folio, rut }) {
+function Empleado({ image, nombre, rut }) {
   return (
     <ArgonBox display="flex" alignItems="center" px={1} py={0.5}>
       <ArgonBox mr={2}>
@@ -21,7 +21,7 @@ function Empleado({ image, folio, rut }) {
       </ArgonBox>
       <ArgonBox display="flex" flexDirection="column">
         <ArgonTypography variant="button" fontWeight="medium">
-          {folio}
+          {nombre}
         </ArgonTypography>
         <ArgonTypography variant="caption" color="secondary">
           {rut}
@@ -31,27 +31,25 @@ function Empleado({ image, folio, rut }) {
   );
 }
 
-function Function({ especialidad, tipoLicencia }) {
+function Function({ empresa, rutEmpresa }) {
   return (
     <ArgonBox display="flex" flexDirection="column">
       <ArgonTypography variant="caption" fontWeight="medium" color="text">
-        {tipoLicencia}
+        {empresa}
       </ArgonTypography>
       <ArgonTypography variant="caption" color="secondary">
-        {especialidad}
+        {rutEmpresa}
       </ArgonTypography>
     </ArgonBox>
   );
 }
 
 function DeterminateColor(color) {
-  if (color == "rechazada") {
-    return "error";
-  } else if (color == "aprobado") {
+  
+  if (color == "Resuelto") {
     return "success";
-  } else if (color == "pendiente") {
-    return "primary";
-  } else if (color == "reducida") {
+  
+  } else if (color == "Cerrado") {
     return "warning";
   }
   return "primary";
@@ -62,42 +60,46 @@ async function createRows(datos) {
   let rows = [];
   datos.forEach((element) => {
     rows.push({      
-      Empleado: <Empleado image={team2} folio={element.folio} rut={element.empleadoRut}  />,
-      Especialidad: <Function especialidad={element.especialidad} tipoLicencia={element.tipoLicencia} />,
-      Estado: (
-          <ArgonBadge variant="gradient" badgeContent={element.estado} color={DeterminateColor(element.estado)} size="xs" container />
+      Empleado: <Empleado image={team2} nombre={element.nombreCompleto} rut={element.empleadoRut}  />,
+      'Rut-Empresa': <Function empresa={element.entidad} rutEmpresa={element.empresaRut} />,
+      "Monto Nominal": (
+        <ArgonTypography variant="caption" color="primary" fontWeight="medium">
+            {element.montoNominal}
+        </ArgonTypography>
         ),
-        "Fecha Inicio": (
+        "Monto Actualizado": (
           <ArgonTypography variant="caption" color="primary" fontWeight="medium">
-            {element.fechaInicio}
+            {element.montoActualizado}
           </ArgonTypography>
         ),
-        "Fecha Termino": (
-          <ArgonTypography variant="caption" color="primary" fontWeight="medium">
-            {element.fechaTermino}
-          </ArgonTypography>
+        "Estado Deuda": (
+            <ArgonBadge variant="gradient" badgeContent={element.estadoDeuda} color={DeterminateColor(element.estadoDeuda)} size="xs" container />
         ),
-        Institucion: (
-          <ArgonTypography variant="caption" color="primary" fontWeight="medium">
-            {element.institucion}
-          </ArgonTypography>
+        "Estado Avance": (
+            <ArgonBadge variant="gradient" badgeContent={element.estadoAvance} color={DeterminateColor(element.estadoAvance)} size="xs" container />
+           
+          ),
+        Abogado: (
+        <ArgonTypography variant="caption" color="primary" fontWeight="medium">
+            {element.abogadoAsignado}
+        </ArgonTypography>
         ),
-      
     });
   });
   return rows;
 }
     
 
-const authorsTableData = async (datos) => {
+const morasTableData = async (datos) => {
   return {
     Columns: [
       { name: "Empleado", align: "left" },
-      { name: "Especialidad", align: "left" },
-      { name: "Estado", align: "center" },
-      { name: "Fecha Inicio", align: "center" },
-      { name: "Fecha Termino", align: "center" },
-      { name: "Institucion", align: "center" },
+      { name: "Rut-Empresa", align: "left" },
+      { name: "Monto Nominal", align: "center" },
+      { name: "Monto Actualizado", align: "center" },
+      { name: "Estado Deuda", align: "center" },
+      { name: "Estado Avance", align: "center" },
+      { name: "Abogado", align: "center" },
     ],
     Rows: await createRows(datos)
 
@@ -245,4 +247,4 @@ const authorsTableData = async (datos) => {
 };
 
 
-export default authorsTableData;
+export default morasTableData;

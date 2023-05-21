@@ -42,6 +42,7 @@ import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Moras from "layouts/moras"
 
 
 // Argon Dashboard 2 MUI components
@@ -65,6 +66,16 @@ const routes = [
       <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-calendar-grid-58" />
     ),
     component: <Tables />,
+  },
+  {
+    type: "route",
+    name: "Moras Presuntas",
+    key: "Moras_Presuntas",
+    route: "/moras-presuntas",
+    icon: (
+      <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-credit-card" />
+    ),
+    component: <Moras />,
   },
   {
     type: "route",
