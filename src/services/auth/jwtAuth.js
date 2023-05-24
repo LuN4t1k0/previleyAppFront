@@ -1,5 +1,4 @@
 import jwtAxios from "axios";
-import { API_DEV, API_PROD } from "config/environment";
 
 
 const jwtAuthAxios = jwtAxios.create({

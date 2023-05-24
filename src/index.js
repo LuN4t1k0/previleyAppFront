@@ -16,6 +16,7 @@ Coded by www.creative-tim.com
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { UsuarioProvider } from './context/usuarioContext';
 import App from "App";
 
 // Soft UI Context Provider
@@ -34,7 +35,9 @@ root.render(
   <BrowserRouter>
     <ArgonControllerProvider>
       <PerfectScrollbar>
-        <App />
+        <UsuarioProvider>
+          <App />
+        </UsuarioProvider>
       </PerfectScrollbar>
     </ArgonControllerProvider>
   </BrowserRouter>

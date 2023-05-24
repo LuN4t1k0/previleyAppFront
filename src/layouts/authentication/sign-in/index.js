@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useReducer } from "react";
+import { useState, useContext } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -33,13 +33,15 @@ import IllustrationLayout from "layouts/authentication/components/IllustrationLa
 import { Box } from "@mui/material";
 import usuarioReducer from "reducers/usuarioReducer";
 import authServices from "services/auth-services";
-// Image
+import { UsuarioContext } from "context/usuarioContext";
 const bgImage =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjP3p1tsZSaYHv34wcTv0ZiWI9_SMkv0Fw2OGENkbhhFH6GuD-nKTp5feQ5rzOwO2RwA&usqp=CAU";
 
 function Illustration() {
+ 
   const [rememberMe, setRememberMe] = useState(false);
-  const [usuario, dispatch] = useReducer(usuarioReducer, null);
+  const usuarioContext = useContext(UsuarioContext);
+  
   const schema = yup.object({
     email: yup.string()
       .required()
@@ -61,14 +63,14 @@ function Illustration() {
     console.log("payload", payload);
     
     try {
+      const { guardarParametros } = usuarioContext;
       authServices.signIn(payload).then((response) => {
         console.log("response", response);
         sessionStorage.setItem("token", response.token);
-        dispatch({ type: 'GUARDAR_USUARIO', payload: response.user });
-        console.log("DATOSUSUARIO", usuario)
+        guardarParametros('Jaimito', response.user.email, '11111111-1', response.user.rol);
+        
         navigate('/dashboard');
       });
-      navigate('/dashboard');
     } catch (error) {
       alert("Error al iniciar sesión 🙁", error);
     }

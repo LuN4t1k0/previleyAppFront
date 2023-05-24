@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
+import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 
@@ -43,9 +44,14 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 import PieChartData from "layouts/dashboard/data/pieChartData";
 import salesTableData from "layouts/dashboard/data/salesTableData";
 import categoriesListData from "layouts/dashboard/data/categoriesListData";
+import Axios
 
 function Default() {
   const { size } = typography;
+
+  useEffect(() => {
+    
+  }, []);
   return (
     <DashboardLayout>
       <DashboardNavbar />

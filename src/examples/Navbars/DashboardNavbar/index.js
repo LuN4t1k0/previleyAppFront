@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // react-router components
 import { useLocation, Link } from "react-router-dom";
@@ -30,13 +30,14 @@ import Icon from "@mui/material/Icon";
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
-import ArgonTypography from "components/ArgonTypography";
+
 import ArgonInput from "components/ArgonInput";
 
 // Argon Dashboard 2 MUI example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
-
+import ArgonTypography from "components/ArgonTypography";
+import { UsuarioContext } from "context/usuarioContext";
 // Custom styles for DashboardNavbar
 import {
   navbar,
@@ -64,6 +65,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useArgonController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const { usuario, email, rut } = useContext(UsuarioContext);
   const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
@@ -170,7 +172,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 }
               />
             </ArgonBox> */}
-            <ArgonBox color={light ? "white" : "inherit"}>
+            <ArgonBox sx={{ display: { xs: "none", md: "flex" } }}>
+            <ArgonBox display="flex" flexDirection="column">
+              <ArgonTypography  fontWeight="bold" color="white">
+                Buen Dia {usuario}
+              </ArgonTypography>
+              <ArgonTypography  fontWeight="bold" color="white">
+                {rut}
+              </ArgonTypography>
+          </ArgonBox>
+            {/* <ArgonTypography
+              
+              
+              
+              color="white"
+              fontWeight="large"
+            >
+              Buenos Dias {usuario}
+            </ArgonTypography> */}
+              
+            </ArgonBox>
+
+           {/*  <ArgonBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
                 <IconButton sx={navbarIconButton} size="small">
                   <Icon
@@ -201,7 +224,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               
               {renderMenu()}
-            </ArgonBox>
+            </ArgonBox> */}
           </ArgonBox>
         )}
       </Toolbar>

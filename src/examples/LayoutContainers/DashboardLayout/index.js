@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 
 // react-router-dom components
 import { useLocation } from "react-router-dom";
@@ -23,6 +23,7 @@ import PropTypes from "prop-types";
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
+import { UsuarioContext } from "context/usuarioContext";
 
 // Argon Dashboard 2 MUI context
 import { useArgonController, setLayout } from "context";
@@ -31,9 +32,11 @@ function DashboardLayout({ bgColor, children, ...rest }) {
   const [controller, dispatch] = useArgonController();
   const { miniSidenav, darkMode } = controller;
   const { pathname } = useLocation();
+  const { usuario, email, rut } = useContext(UsuarioContext);
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");
+    console.log("usuario: " + usuario);
   }, [pathname]);
 
   const background = darkMode && !bgColor ? "transparent" : bgColor;
