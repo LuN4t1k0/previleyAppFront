@@ -1,30 +1,32 @@
-import { char } from "stylis";
 import jwtAuthAxios from "./auth/jwtAuth";
-import { Pie } from "react-chartjs-2";
+
+const initValue = {
+    labels: [],
+    datasets: [
+      {
+        //label: '# of Votes',
+        data: [],
+        backgroundColor: [
+          
+        ],
+        borderColor: [
+          
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
 function formatChartData(data) {
-    const PieChartData = {
-        labels: [],
-        datasets: [
-          {
-            //label: '# of Votes',
-            data: [],
-            backgroundColor: [
-              
-            ],
-            borderColor: [
-              
-            ],
-            borderWidth: 1,
-          },
-        ],
-      };
+    const charts = [];
+    
     
     const labels = [];
     const values = [];
     const backgroundColors = [];
     const borderColors = [];
     data.map((element) => {
+        let PieChartData = JSON.parse(JSON.stringify(initValue));
         if( Object.keys(element)[0] == "licencias" ) {
             if ( element.aprobada != 0 && element.aprobada != null ) {
                 labels.push("Aprobadas");
@@ -55,20 +57,40 @@ function formatChartData(data) {
             PieChartData.datasets[0].data = values;
             PieChartData.datasets[0].backgroundColor = backgroundColors;
             PieChartData.datasets[0].borderColor = borderColors;
+            charts.push(PieChartData);            
+
         } else if ( Object.keys(element)[0] == "moraPresunta" ) {
-            if ( element.moraPresunta != 0 && element.moraPresunta != null ) {
-                labels.push("Mora Presunta");
-                values.push(element.moraPresunta);
-                backgroundColors.push("red");
-                borderColors.push("red");
-            }
-            if ( element.moraReal != 0 && element.moraReal != null ) {
-                labels.push("Mora Real");
-                values.push(element.moraReal);
+            if ( element.PENDIENTE != null && element.PENDIENTE > 0 ) {
+                labels.push("Pendiente");
+                values.push(element.PENDIENTE);
                 backgroundColors.push("yellow");
                 borderColors.push("yellow");
             }
-        } else if ( Object.keys(element)[0] == "pagosExceso" ) {
+            if ( element.EN_PROCESO != null && element.EN_PROCESO > 0 ) {
+                labels.push("En Proceso");
+                values.push(element.EN_PROCESO);
+                backgroundColors.push("primary");
+                borderColors.push("primary");
+            }
+            if ( element.RESUELTO != null && element.RESUELTO > 0 ) {
+                labels.push("Resuelto");
+                values.push(element.RESUELTO);
+                backgroundColors.push("green");
+                borderColors.push("green");
+            }
+            if ( element.CERRADO != null && element.CERRADO > 0 ) {
+                labels.push("Cerrado");
+                values.push(element.CERRADO);
+                backgroundColors.push("grey");
+                borderColors.push("grey");
+            }
+
+            PieChartData.labels = labels;
+            PieChartData.datasets[0].data = values;
+            PieChartData.datasets[0].backgroundColor = backgroundColors;
+            PieChartData.datasets[0].borderColor = borderColors;
+            charts.push(PieChartData);
+        } else if ( Object.keys(element)[0] == "pagex" ) {
                 
         }   
     });

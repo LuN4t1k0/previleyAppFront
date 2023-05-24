@@ -98,6 +98,10 @@ const colors = {
   },
 
   gradients: {
+    grey: {
+      main: "#f8f9fa",
+      state: "#f8f9fa",
+    },
     primary: {
       main: "#5e72e4",
       state: "#825ee4",
