@@ -10,7 +10,7 @@ authServices.getCurrentUser = async () => {
 //loginCreds must be {email: "abc@example.com", password: "ABC123DEF"}
 authServices.signIn = async (loginCreds) => {
     const {data} = await jwtAuthAxios.post('/auth/login', loginCreds);
-    console.log(data);
+    console.log("ALO", data);
     return data;
 };
 

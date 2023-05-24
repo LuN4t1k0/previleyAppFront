@@ -13,10 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useReducer } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 // @mui material components
 import Switch from "@mui/material/Switch";
@@ -28,18 +28,18 @@ import ArgonInput from "components/ArgonInput";
 import ArgonButton from "components/ArgonButton";
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
-import {useNavigate} from "react-router-dom";
 // Authentication layout components
 import IllustrationLayout from "layouts/authentication/components/IllustrationLayout";
 import { Box } from "@mui/material";
-import authServices from "../../../services/auth-services";
-
+import usuarioReducer from "reducers/usuarioReducer";
+import authServices from "services/auth-services";
 // Image
 const bgImage =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjP3p1tsZSaYHv34wcTv0ZiWI9_SMkv0Fw2OGENkbhhFH6GuD-nKTp5feQ5rzOwO2RwA&usqp=CAU";
 
 function Illustration() {
   const [rememberMe, setRememberMe] = useState(false);
+  const [usuario, dispatch] = useReducer(usuarioReducer, null);
   const schema = yup.object({
     email: yup.string()
       .required()
@@ -52,8 +52,8 @@ function Illustration() {
   const navigate = useNavigate();
   const onSubmit = (data) => {
     
-    console.log("data", data);
-    //navigate('/licenses');
+    //console.log("data", data);
+    
     login(data);
   };
 
@@ -61,14 +61,16 @@ function Illustration() {
     console.log("payload", payload);
     
     try {
-      /* authServices.signIn(payload).then((response) => {
+      authServices.signIn(payload).then((response) => {
         console.log("response", response);
         sessionStorage.setItem("token", response.token);
+        dispatch({ type: 'GUARDAR_USUARIO', payload: response.user });
+        console.log("DATOSUSUARIO", usuario)
         navigate('/dashboard');
-      }); */
+      });
       navigate('/dashboard');
-    } catch ({ response: { data: message } }) {
-      alert("Error al iniciar sesión 🙁");
+    } catch (error) {
+      alert("Error al iniciar sesión 🙁", error);
     }
   }
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
