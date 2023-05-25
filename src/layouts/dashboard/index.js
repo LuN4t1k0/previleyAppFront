@@ -16,8 +16,8 @@ Coded by www.creative-tim.com
 
 // @mui material components
 import { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
+
+import { CircularProgress, Icon, Grid } from "@mui/material";
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
@@ -44,13 +44,41 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 import PieChartData from "layouts/dashboard/data/pieChartData";
 import salesTableData from "layouts/dashboard/data/salesTableData";
 import categoriesListData from "layouts/dashboard/data/categoriesListData";
-import Axios
+import { UsuarioContext } from "context/usuarioContext";
+import chartServices from "services/chart-services";
 
 function Default() {
   const { size } = typography;
+  const [Loading, setLoading] = useState(true);
+  const [licenciasData, setlicenciasData] = useState([]);
+  const [morasData, setMoraData] = useState([]);
+  const [pagex, setPagex] = useState([]);
+  
 
   useEffect(() => {
-    
+    setLoading(true);
+    const getCharts = async () => {
+      try {
+        console.log("entro a getCharts")
+        const charts = await chartServices.getAllCharts();
+        if (charts.length == 3) {
+          setlicenciasData(charts[0]);
+          setMoraData(charts[1]);
+          setPagex(charts[2]);
+        }
+        else {
+          console.log("no hay datos")
+          console.log(charts)
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        
+        setLoading(false);
+      }
+      
+  }
+  getCharts();
   }, []);
   return (
     <DashboardLayout>
@@ -90,46 +118,51 @@ function Default() {
             />
           </Grid>
         </Grid> */}
-        <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} lg={7}>
-            <GradientLineChart
-              title="Sales Overview"
-              description={
-                <ArgonBox display="flex" alignItems="center">
-                  <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                    <Icon sx={{ fontWeight: "bold" }}>arrow_upward</Icon>
-                  </ArgonBox>
-                  <ArgonTypography variant="button" color="text" fontWeight="medium">
-                    4% more{" "}
-                    <ArgonTypography variant="button" color="text" fontWeight="regular">
-                      in 2022
-                    </ArgonTypography>
-                  </ArgonTypography>
+        {Loading ? (
+                <ArgonBox display="flex" justifyContent="center" alignItems="center" p={3}>
+                  <ArgonTypography variant="h6">Loading...</ArgonTypography>
+                  <CircularProgress color='secondary' />
                 </ArgonBox>
-              }
-              chart={gradientLineChartData}
-            />
-          </Grid>
-          <Grid item xs={12} lg={5}>
-          <PieChart
-              title="Sales Overview"
-              description={
-                <ArgonBox display="flex" alignItems="center">
-                  <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                    <Icon sx={{ fontWeight: "bold" }}>arrow_upward</Icon>
-                  </ArgonBox>
-                  <ArgonTypography variant="button" color="text" fontWeight="medium">
-                    4% more{" "}
-                    <ArgonTypography variant="button" color="text" fontWeight="regular">
-                      in 2022
-                    </ArgonTypography>
-                  </ArgonTypography>
-                </ArgonBox>
-              }
-              chart={PieChartData}
-            />
-          </Grid>
-        </Grid>
+                
+              ) : (
+                  <Grid container spacing={3} mb={3}>
+                  
+                    <Grid item xs={12} lg={7}>
+                      <GradientLineChart
+                        title="Sales Overview"
+                        description={
+                          <ArgonBox display="flex" alignItems="center">
+                            <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
+                              <Icon sx={{ fontWeight: "bold" }}>arrow_upward</Icon>
+                            </ArgonBox>
+                            <ArgonTypography variant="button" color="text" fontWeight="medium">
+                              4% more{" "}
+                              <ArgonTypography variant="button" color="text" fontWeight="regular">
+                                in 2022
+                              </ArgonTypography>
+                            </ArgonTypography>
+                          </ArgonBox>
+                        }
+                        chart={gradientLineChartData}
+                      />
+                    </Grid>
+                    <Grid item xs={12} lg={5}>
+                    <PieChart
+                        title="Licencias Medicas"
+                        tooltip={true}
+                        tooltipStyle={{
+                          background: "white",
+                          color: "black",
+                          borderRadius: "4px",
+                          border: "1px solid gray",
+                          padding: "8px",
+                        }}
+                        chart={licenciasData}
+                      />
+                    </Grid>
+                  </Grid>
+        )}
+        
         {/* <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <SalesTable title="Sales by Country" rows={salesTableData} />

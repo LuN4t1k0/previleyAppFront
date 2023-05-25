@@ -20,13 +20,17 @@ import colors from "assets/theme/base/colors";
 const { gradients, dark } = colors;
 
 function configs(labels, datasets) {
+  console.log(datasets, 'datasets')
+  console.log(labels, 'labels')
   const backgroundColors = [];
-
-  if (datasets.backgroundColors) {
-    datasets.backgroundColors.forEach((color) =>
+  console.log(datasets[0].backgroundColor, 'datasets[0]')
+  if (datasets[0].backgroundColor) {
+    datasets[0].backgroundColor.forEach((color) => {
+      console.log(color, 'color')
       gradients[color]
         ? backgroundColors.push(gradients[color].state)
         : backgroundColors.push(dark.main)
+      }
     );
   } else {
     backgroundColors.push(dark.main);

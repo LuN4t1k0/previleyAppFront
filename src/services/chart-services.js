@@ -17,84 +17,126 @@ const initValue = {
     ],
   };
 
+  const TestChartData = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
 function formatChartData(data) {
-    const charts = [];
+    const charts = []; 
     
     
-    const labels = [];
-    const values = [];
-    const backgroundColors = [];
-    const borderColors = [];
+    
     data.map((element) => {
-        let PieChartData = JSON.parse(JSON.stringify(initValue));
-        if( Object.keys(element)[0] == "licencias" ) {
-            if ( element.aprobada != 0 && element.aprobada != null ) {
-                labels.push("Aprobadas");
-                values.push(element.aprobada);
-                backgroundColors.push("green");
-                borderColors.push("green");
+        
+        const PieChartData = JSON.parse(JSON.stringify(initValue));
+        
+        if( Object.keys(element) == "licencias" ) {
+            console.log("licencias" , element.licencias)
+            if ( element.licencias.aprobada != 0 && element.licencias.aprobada != null ) {
+                PieChartData.labels.push("Aprobadas");
+                PieChartData.datasets[0].data.push(element.licencias.aprobada);
+                PieChartData.datasets[0].backgroundColor.push("green");
+                PieChartData.datasets[0].borderColor.push("green");
             }
-            if ( element.rechazada != 0 && element.rechazada != null ) {
-                labels.push("Rechazadas");
-                values.push(element.rechazada);
-                backgroundColors.push("red");
-                borderColors.push("red");
+            if ( element.licencias.rechazada != 0 && element.licencias.rechazada != null ) {
+                PieChartData.labels.push("Rechazadas");
+                PieChartData.datasets[0].data.push(element.licencias.rechazada);
+                PieChartData.datasets[0].backgroundColor.push("red");
+                PieChartData.datasets[0].borderColor.push("red");
             }
-            if ( element.pendiente != 0 && element.pendiente != null ) {
-                labels.push("Pendientes");
-                values.push(element.pendiente);
-                backgroundColors.push("primary");
-                borderColors.push("primary");
+            if ( element.licencias.pendiente != 0 && element.licencias.pendiente != null ) {
+                PieChartData.labels.push("Pendientes");
+                PieChartData.datasets[0].data.push(element.licencias.pendiente);
+                PieChartData.datasets[0].backgroundColor.push("primary");
+                PieChartData.datasets[0].borderColor.push("primary");
             }
-            if ( element.reducida != 0 && element.reducida != null ) {
-                labels.push("Reducidas");
-                values.push(element.reducida);
-                backgroundColors.push("yellow");
-                borderColors.push("yellow");
+            if ( element.licencias.reducida != 0 && element.licencias.reducida != null ) {
+                PieChartData.labels.push("Reducidas");
+                PieChartData.datasets[0].data.push(element.licencias.reducida);
+                PieChartData.datasets[0].backgroundColor.push("yellow");
+                PieChartData.datasets[0].borderColor.push("yellow");
             }
 
-            PieChartData.labels = labels;
-            PieChartData.datasets[0].data = values;
-            PieChartData.datasets[0].backgroundColor = backgroundColors;
-            PieChartData.datasets[0].borderColor = borderColors;
+            console.log("PIECHART ANTES DE SET ", PieChartData)
             charts.push(PieChartData);            
 
-        } else if ( Object.keys(element)[0] == "moraPresunta" ) {
-            if ( element.PENDIENTE != null && element.PENDIENTE > 0 ) {
-                labels.push("Pendiente");
-                values.push(element.PENDIENTE);
-                backgroundColors.push("yellow");
-                borderColors.push("yellow");
+        }   
+        else if ( Object.keys(element) == "moraPresunta" ) {
+            console.log("moraPresunta")
+            if ( element.moraPresunta.pendiente != null && element.moraPresunta.pendiente > 0 ) {
+                PieChartData.labels.push("Pendiente");
+                PieChartData.datasets[0].data.push(element.moraPresunta.PENDIENTE);
+                PieChartData.datasets[0].backgroundColor.push("yellow");
+                PieChartData.datasets[0].borderColor.push("yellow");
             }
-            if ( element.EN_PROCESO != null && element.EN_PROCESO > 0 ) {
-                labels.push("En Proceso");
-                values.push(element.EN_PROCESO);
-                backgroundColors.push("primary");
-                borderColors.push("primary");
+            if ( element.moraPresunta.en_proceso != null && element.moraPresunta.en_proceso > 0 ) {
+                PieChartData.labels.push("En Proceso");
+                PieChartData.datasets[0].data.push(element.moraPresunta.EN_PROCESO);
+                PieChartData.datasets[0].backgroundColor.push("primary");
+                PieChartData.datasets[0].borderColor.push("primary");
             }
-            if ( element.RESUELTO != null && element.RESUELTO > 0 ) {
-                labels.push("Resuelto");
-                values.push(element.RESUELTO);
-                backgroundColors.push("green");
-                borderColors.push("green");
+            if ( element.moraPresunta.resuelto != null && element.moraPresunta.resuelto > 0 ) {
+                PieChartData.labels.push("Resuelto");
+                PieChartData.datasets[0].data.push(element.RESUELTO);
+                PieChartData.datasets[0].backgroundColor.push("green");
+                PieChartData.datasets[0].borderColor.push("green");
             }
-            if ( element.CERRADO != null && element.CERRADO > 0 ) {
-                labels.push("Cerrado");
-                values.push(element.CERRADO);
-                backgroundColors.push("grey");
-                borderColors.push("grey");
+            if (  element.moraPresunta.cerrado != null &&  element.moraPresunta.cerrado > 0 ) {
+                PieChartData.labels.push("Cerrado");
+                PieChartData.datasets[0].data.push( element.moraPresunta.CERRADO);
+                PieChartData.datasets[0].backgroundColor.push("grey");
+                PieChartData.datasets[0].borderColor.push("grey");
             }
 
-            PieChartData.labels = labels;
-            PieChartData.datasets[0].data = values;
-            PieChartData.datasets[0].backgroundColor = backgroundColors;
-            PieChartData.datasets[0].borderColor = borderColors;
+            console.log("PIECHART ANTES DE SET ", PieChartData)
             charts.push(PieChartData);
-        } else if ( Object.keys(element)[0] == "pagex" ) {
-                
-        }   
+        }
+        else if ( Object.keys(element) == "pagex" ) {
+            console.log("pagex")
+            if (  element.pagex.pendiente != null && element.pagex.pendiente > 0 ) {
+                PieChartData.labels.push("Pendiente");
+                PieChartData.datasets[0].data.push(element.pagex.PENDIENTE);
+                PieChartData.datasets[0].backgroundColor.push("yellow");
+                PieChartData.datasets[0].borderColor.push("yellow");
+            }
+            if ( element.pagex.pagada != null && element.pagex.pagada > 0 ) {
+                PieChartData.labels.push("Pagada");
+                PieChartData.datasets[0].data.push(element.pagex.PAGADA);
+                PieChartData.datasets[0].backgroundColor.push("green");
+                PieChartData.datasets[0].borderColor.push("green");
+            }
+
+            console.log("PIECHART ANTES DE SET ", PieChartData)
+            charts.push(PieChartData);
+        } else {
+            charts.push(TestChartData);
+        }
+
     });
-    return { labels, values };
+    return charts;
 }
 
 const chartServices = {};
@@ -125,7 +167,15 @@ chartServices.getAllCharts = async () => {
     charts.push({moraPresunta: response.data});
     response = await jwtAuthAxios.get("/pagex/total-pagado/11111111-1");
     charts.push({pagex: response.data});
-    return charts;
+    console.log("ALOOOO")
+    
+
+    
+
+    const formatedCharts = formatChartData(charts);
+
+    console.log("charts despues de funcion", formatedCharts)
+    return formatedCharts;
 };
 
 
