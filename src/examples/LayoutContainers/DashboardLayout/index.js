@@ -33,6 +33,7 @@ function DashboardLayout({ bgColor, children, ...rest }) {
   const { miniSidenav, darkMode } = controller;
   const { pathname } = useLocation();
   const { usuario, email, rut } = useContext(UsuarioContext);
+  
 
   useEffect(() => {
     setLayout(dispatch, "dashboard");

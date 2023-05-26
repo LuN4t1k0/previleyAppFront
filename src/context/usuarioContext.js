@@ -8,23 +8,41 @@ export const UsuarioProvider = ({ children }) => {
   const [email, setEmail] = useState('');
   const [rut, setRut] = useState('');
   const [rol, setRol] = useState('');
+  const [rutEmpresas, setRutEmpresas] = useState([]);
 
-  const guardarParametros = (usuarioData, emailData, rutData, rolData) => {
-    console.log("guardarParametros: " + usuarioData, emailData, rutData, rolData);
-    setUsuario(usuarioData);
-    setEmail(emailData);
-    setRut(rutData);
-    setRol(rolData);
-    console.log(usuario, email, rut)
+  const guardarParametros = (data) => {
+    console.log("guardarParametros ROl: " + data.user.rol);
+    setUsuario('randomUser');
+    setEmail(data.user.email);
+    setRut('00000000-0');
+    setRol(data.user.rol);
+    if(data.user.rol == "empresa"){
+      console.log("EMRPESA", data.rutEmpresa[0])
+      setRutEmpresas(data.rutEmpresa)
+    }
+    
+    
+    console.log("EMPRESAS121", rutEmpresas)
 
   };
+
+  const refreshParameters = (user, email, rut, rutEmpresa, rol) => {
+    setUsuario(user);
+    setRut(rut);
+    setRutEmpresas(rutEmpresa);
+    setRol(rol);
+    setEmail(email);
+  };
+
 
   const usuarioContextValue = {
     usuario,
     email,
     rut,
     rol,
-    guardarParametros
+    rutEmpresas,
+    guardarParametros,
+    refreshParameters
   };
 
   return (

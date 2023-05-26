@@ -15,9 +15,9 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import { useState, useEffect } from "react";
-
-import { CircularProgress, Icon, Grid } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
+import { CircularProgress, Icon, Grid, Tabs, Tab } from "@mui/material";
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
@@ -46,30 +46,76 @@ import salesTableData from "layouts/dashboard/data/salesTableData";
 import categoriesListData from "layouts/dashboard/data/categoriesListData";
 import { UsuarioContext } from "context/usuarioContext";
 import chartServices from "services/chart-services";
+import userServices from "services/user-services";
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <ArgonBox sx={{ p: 3 }}>
+          <ArgonTypography>{children}</ArgonTypography>
+        </ArgonBox>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
 function Default() {
   const { size } = typography;
   const [Loading, setLoading] = useState(true);
+  const [charts, setCharts] = useState([]);
   const [licenciasData, setlicenciasData] = useState([]);
   const [morasData, setMoraData] = useState([]);
   const [pagex, setPagex] = useState([]);
+  const [activeTab, setActiveTab] = useState(0);
+  const [empresas, setEmpresas] = useState([]);
+  const [rol, setRol] = useState("");
+  //const { usuario, email, rut, rol, refreshParameters, rutEmpresas } = useContext(UsuarioContext);
   
-
   useEffect(() => {
+    
+    
     setLoading(true);
+    
+    setRol(sessionStorage.getItem("rol"));
+    console.log("a", rol)
+    const getEmpresas = async () => {
+      try {
+        let empr = sessionStorage.getItem("rutEmpresas");
+        const data = await userServices.getEmpresasInfo(empr);
+        console.log("entro a getEmpresas")
+        console.log(data)
+          setEmpresas(data);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const getCharts = async () => {
       try {
         console.log("entro a getCharts")
-        const charts = await chartServices.getAllCharts();
-        if (charts.length == 3) {
-          setlicenciasData(charts[0]);
-          setMoraData(charts[1]);
-          setPagex(charts[2]);
-        }
-        else {
-          console.log("no hay datos")
-          console.log(charts)
-        }
+        let empr = sessionStorage.getItem("rutEmpresas");
+        const charts = await chartServices.getAllCharts(empr);
+        console.log("todos LOS CHARTS ", charts)
+        setCharts(charts);
+        /* setlicenciasData(charts[0]);
+        setMoraData(charts[1]);
+        setPagex(charts[2]); */
+        
+        
       } catch (error) {
         console.log(error);
       } finally {
@@ -78,100 +124,105 @@ function Default() {
       }
       
   }
+  
+  
+  getEmpresas();    
+  
   getCharts();
   }, []);
+
+  const handleChangeTab = (event, newValue) => {
+    console.log(newValue);
+    setActiveTab(newValue);
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <ArgonBox py={3}>
-        {/* <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="today's money"
-              count="$53,000"
-              icon={{ color: "info", component: <i className="ni ni-money-coins" /> }}
-              percentage={{ color: "success", count: "+55%", text: "since yesterday" }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="today's users"
-              count="2,300"
-              icon={{ color: "error", component: <i className="ni ni-world" /> }}
-              percentage={{ color: "success", count: "+3%", text: "since last week" }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="new clients"
-              count="+3,462"
-              icon={{ color: "success", component: <i className="ni ni-paper-diploma" /> }}
-              percentage={{ color: "error", count: "-2%", text: "since last quarter" }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <DetailedStatisticsCard
-              title="sales"
-              count="$103,430"
-              icon={{ color: "warning", component: <i className="ni ni-cart" /> }}
-              percentage={{ color: "success", count: "+5%", text: "than last month" }}
-            />
-          </Grid>
-        </Grid> */}
-        {Loading ? (
-                <ArgonBox display="flex" justifyContent="center" alignItems="center" p={3}>
-                  <ArgonTypography variant="h6">Loading...</ArgonTypography>
-                  <CircularProgress color='secondary' />
-                </ArgonBox>
+      {Loading ? (
+        <ArgonBox display="flex" justifyContent="center" alignItems="center" p={3}>
+        <ArgonTypography variant="h6">Loading...</ArgonTypography>
+        <CircularProgress color='secondary' />
+      </ArgonBox>
+        ) : (
+          
+    
+        <ArgonBox py={3}>
+            <Tabs value={activeTab} onChange={handleChangeTab}>
+            {empresas.map((empresa, index) => (
+              <Tab key={index} label={empresa.nombre} />
+            ))}
+          </Tabs>
+          {empresas.map((empresa, index) => (
+              <TabPanel key={index} value={activeTab} index={index}>
                 
-              ) : (
-                  <Grid container spacing={3} mb={3}>
                   
-                    <Grid item xs={12} lg={7}>
-                      <GradientLineChart
-                        title="Sales Overview"
-                        description={
-                          <ArgonBox display="flex" alignItems="center">
-                            <ArgonBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                              <Icon sx={{ fontWeight: "bold" }}>arrow_upward</Icon>
-                            </ArgonBox>
-                            <ArgonTypography variant="button" color="text" fontWeight="medium">
-                              4% more{" "}
-                              <ArgonTypography variant="button" color="text" fontWeight="regular">
-                                in 2022
-                              </ArgonTypography>
-                            </ArgonTypography>
-                          </ArgonBox>
-                        }
-                        chart={gradientLineChartData}
-                      />
-                    </Grid>
+                  
+                
+                    <Grid container spacing={3} mb={3}>
+                    
                     <Grid item xs={12} lg={5}>
-                    <PieChart
-                        title="Licencias Medicas"
-                        tooltip={true}
-                        tooltipStyle={{
-                          background: "white",
-                          color: "black",
-                          borderRadius: "4px",
-                          border: "1px solid gray",
-                          padding: "8px",
-                        }}
-                        chart={licenciasData}
-                      />
+                      
+                      <PieChart
+                          title="Licencias Medicas"
+                          tooltip={true}
+                          tooltipStyle={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: "4px",
+                            border: "1px solid gray",
+                            padding: "8px",
+                          }}
+                          chart={charts[index][0]}
+                        
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={5}>
+                      
+                      <PieChart
+                          title="Moras"
+                          tooltip={true}
+                          tooltipStyle={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: "4px",
+                            border: "1px solid gray",
+                            padding: "8px",
+                          }}
+                          chart={charts[index][1]}
+                        
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={5}>
+                      
+                      <PieChart
+                          title="Pagos en Exceso"
+                          tooltip={true}
+                          tooltipStyle={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: "4px",
+                            border: "1px solid gray",
+                            padding: "8px",
+                          }}
+                          chart={charts[index][2]}
+                        
+                        />
+                      </Grid>
                     </Grid>
-                  </Grid>
+                    </TabPanel>
+          ))}
+          
+          
+          
+              </ArgonBox>
+              
+       
+             
+        
+          
+                  
         )}
         
-        {/* <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <SalesTable title="Sales by Country" rows={salesTableData} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <CategoriesList title="categories" categories={categoriesListData} />
-          </Grid>
-        </Grid> */}
-      </ArgonBox>
       <Footer />
     </DashboardLayout>
   );

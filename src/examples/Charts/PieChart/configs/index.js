@@ -59,10 +59,17 @@ function configs(labels, datasets) {
       plugins: {
         legend: {
           display: true,
-          position: 'left',
+          position: 'top',
           labels: {
-            boxWidth: 10
+            boxWidth: 20
+          },
+          plugins: {
+            callbacks: {
+              title: (xDatapoint) => {return formatXValue(xDatapoint.raw)},
+              label: (yDatapoint) => {return formatYValue(yDatapoint.raw)},
+            }
           }
+
         },
       },
       interaction: {

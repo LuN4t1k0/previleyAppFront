@@ -153,6 +153,10 @@ const colors = {
       main: "#FF0000",
       state: "#FF0000",
     },
+    aceptada: {
+      main: "#94BA8D",
+      state: "#94BA8D",
+    }
   },
 
   socialMediaColors: {

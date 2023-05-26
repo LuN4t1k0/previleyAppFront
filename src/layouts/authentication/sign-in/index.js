@@ -65,9 +65,15 @@ function Illustration() {
     try {
       const { guardarParametros } = usuarioContext;
       authServices.signIn(payload).then((response) => {
-        console.log("response", response);
+        console.log("response", response.user.user);
+        //console.log("response", response.user.user.rol)
         sessionStorage.setItem("token", response.token);
-        guardarParametros('Jaimito', response.user.email, '11111111-1', response.user.rol);
+        sessionStorage.setItem("rol", response.user.user.rol);
+        sessionStorage.setItem("email", response.user.user.email);
+        sessionStorage.setItem("rutEmpresas", response.user.rutEmpresa);
+        sessionStorage.setItem("usuario", "JAIMITO");
+        
+        //guardarParametros(response.user);
         
         navigate('/dashboard');
       });

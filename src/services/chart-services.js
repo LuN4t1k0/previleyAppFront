@@ -1,5 +1,7 @@
 import jwtAuthAxios from "./auth/jwtAuth";
 
+
+
 const initValue = {
     labels: [],
     datasets: [
@@ -13,6 +15,7 @@ const initValue = {
           
         ],
         borderWidth: 1,
+        
       },
     ],
   };
@@ -55,6 +58,7 @@ function formatChartData(data) {
         
         if( Object.keys(element) == "licencias" ) {
             console.log("licencias" , element.licencias)
+            
             if ( element.licencias.aprobada != 0 && element.licencias.aprobada != null ) {
                 PieChartData.labels.push("Aprobadas");
                 PieChartData.datasets[0].data.push(element.licencias.aprobada);
@@ -92,11 +96,17 @@ function formatChartData(data) {
                 PieChartData.datasets[0].backgroundColor.push("yellow");
                 PieChartData.datasets[0].borderColor.push("yellow");
             }
-            if ( element.moraPresunta.en_proceso != null && element.moraPresunta.en_proceso > 0 ) {
-                PieChartData.labels.push("En Proceso");
-                PieChartData.datasets[0].data.push(element.moraPresunta.EN_PROCESO);
+            if ( element.moraPresunta.tramite != null && element.moraPresunta.tramite > 0 ) {
+                PieChartData.labels.push("En Tramite");
+                PieChartData.datasets[0].data.push(element.moraPresunta.tramite);
                 PieChartData.datasets[0].backgroundColor.push("primary");
                 PieChartData.datasets[0].borderColor.push("primary");
+            }
+            if ( element.moraPresunta.aclarada != null && element.moraPresunta.aclarada > 0 ) {
+                PieChartData.labels.push("Aclarada");
+                PieChartData.datasets[0].data.push(element.moraPresunta.aclarada);
+                PieChartData.datasets[0].backgroundColor.push("light");
+                PieChartData.datasets[0].borderColor.push("light");
             }
             if ( element.moraPresunta.resuelto != null && element.moraPresunta.resuelto > 0 ) {
                 PieChartData.labels.push("Resuelto");
@@ -109,6 +119,12 @@ function formatChartData(data) {
                 PieChartData.datasets[0].data.push( element.moraPresunta.CERRADO);
                 PieChartData.datasets[0].backgroundColor.push("grey");
                 PieChartData.datasets[0].borderColor.push("grey");
+            }
+            if (  element.moraPresunta.aceptada != null &&  element.moraPresunta.aceptada > 0 ) {
+                PieChartData.labels.push("Aceptada");
+                PieChartData.datasets[0].data.push( element.moraPresunta.aceptada);
+                PieChartData.datasets[0].backgroundColor.push("aceptada");
+                PieChartData.datasets[0].borderColor.push("aceptada");
             }
 
             console.log("PIECHART ANTES DE SET ", PieChartData)
@@ -159,23 +175,29 @@ chartServices.getCountPagosExceso = async () => {
     return data;
 };
 
-chartServices.getAllCharts = async () => {
-    const charts = [];
-    let response = await jwtAuthAxios.get("/licenciasMedicas/total/11111111-1");
-    charts.push({licencias: response.data});
-    response = await jwtAuthAxios.get("/moraPresunta/total/11111111-1");
-    charts.push({moraPresunta: response.data});
-    response = await jwtAuthAxios.get("/pagex/total-pagado/11111111-1");
-    charts.push({pagex: response.data});
-    console.log("ALOOOO")
+chartServices.getAllCharts = async (Empresas) => {
+    Empresas = Empresas.split(",")
+    
+    const chartsAll = [];
+    for (const empresa of Empresas) {
+        const charts = [];
+        let response = await jwtAuthAxios.get("/licenciasMedicas/total/" + empresa);
+        charts.push({licencias: response.data});
+        response = await jwtAuthAxios.get("/moraPresunta/total/" + empresa);
+        charts.push({moraPresunta: response.data});
+        response = await jwtAuthAxios.get("/pagex/total-pagado/" + empresa);
+        charts.push({pagex: response.data});
+        console.log("ALOOOO ", charts)
+    
     
 
     
 
-    const formatedCharts = formatChartData(charts);
-
-    console.log("charts despues de funcion", formatedCharts)
-    return formatedCharts;
+        const formatedCharts = formatChartData(charts);
+        chartsAll.push(formatedCharts);
+    }
+    //console.log("charts despues de funcion", formatedCharts)
+    return chartsAll;
 };
 
 

@@ -64,11 +64,20 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useArgonController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
-  const [openMenu, setOpenMenu] = useState(false);
-  const { usuario, email, rut } = useContext(UsuarioContext);
+  const [openMenu, setOpenMenu] = useState(true);
+  //const { usuario, email, rut } = useContext(UsuarioContext);
+  const [usuario, setUsuario] = useState("");
+  const [email, setEmail] = useState("");
+  const [rut, setRut] = useState("");
+  const [Loading, setLoading] = useState(true);
   const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
+    setLoading(true);
+    setUsuario(sessionStorage.getItem("usuario"));
+    setEmail(sessionStorage.getItem("email"));
+    setRut(sessionStorage.getItem("rut"));
+    
     // Setting the navbar type
     if (fixedNavbar) {
       setNavbarType("sticky");
@@ -89,7 +98,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
     // Call the handleTransparentNavbar function to set the state with the initial value.
     handleTransparentNavbar();
-
+    setLoading(false);
     // Remove event listener on cleanup
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
@@ -139,96 +148,70 @@ function DashboardNavbar({ absolute, light, isMini }) {
   );
 
   return (
-    <AppBar
-      position={absolute ? "absolute" : navbarType}
-      color="inherit"
-      sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
-    >
-      <Toolbar sx={(theme) => navbarContainer(theme, { navbarType })}>
-        <ArgonBox
-          color={light && transparentNavbar ? "white" : "dark"}
-          mb={{ xs: 1, md: 0 }}
-          sx={(theme) => navbarRow(theme, { isMini })}
-        >
-          <Breadcrumbs
-            icon="home"
-            title={route[route.length - 1]}
-            route={route}
-            light={transparentNavbar ? light : false}
-          />
-          <Icon fontSize="medium" sx={navbarDesktopMenu} onClick={handleMiniSidenav}>
-            {miniSidenav ? "menu_open" : "menu"}
-          </Icon>
-        </ArgonBox>
-        {isMini ? null : (
-          <ArgonBox sx={(theme) => navbarRow(theme, { isMini })}>
-            {/* <ArgonBox pr={1}>
-              <ArgonInput
-                placeholder="Type here..."
-                startAdornment={
-                  <Icon fontSize="small" style={{ marginRight: "6px" }}>
-                    search
-                  </Icon>
-                }
-              />
-            </ArgonBox> */}
-            <ArgonBox sx={{ display: { xs: "none", md: "flex" } }}>
-            <ArgonBox display="flex" flexDirection="column">
-              <ArgonTypography  fontWeight="bold" color="white">
-                Buen Dia {usuario}
-              </ArgonTypography>
-              <ArgonTypography  fontWeight="bold" color="white">
-                {rut}
-              </ArgonTypography>
+    
+    
+      <AppBar
+        position={absolute ? "absolute" : navbarType}
+        color="inherit"
+        sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
+      >
+        {!Loading ? (
+        <Toolbar sx={(theme) => navbarContainer(theme, { navbarType })}>
+          <ArgonBox
+            color={light && transparentNavbar ? "white" : "dark"}
+            mb={{ xs: 1, md: 0 }}
+            sx={(theme) => navbarRow(theme, { isMini })}
+          >
+            <Breadcrumbs
+              icon="home"
+              title={route[route.length - 1]}
+              route={route}
+              light={transparentNavbar ? light : false}
+            />
+            <Icon fontSize="medium" sx={navbarDesktopMenu} onClick={handleMiniSidenav}>
+              {miniSidenav ? "menu_open" : "menu"}
+            </Icon>
           </ArgonBox>
-            {/* <ArgonTypography
-              
-              
-              
-              color="white"
-              fontWeight="large"
-            >
-              Buenos Dias {usuario}
-            </ArgonTypography> */}
-              
+          {isMini ? null : (
+            <ArgonBox sx={(theme) => navbarRow(theme, { isMini })}>
+              {/* <ArgonBox pr={1}>
+                <ArgonInput
+                  placeholder="Type here..."
+                  startAdornment={
+                    <Icon fontSize="small" style={{ marginRight: "6px" }}>
+                      search
+                    </Icon>
+                  }
+                />
+              </ArgonBox> */}
+              <ArgonBox sx={{ display: { xs: "none", md: "flex" } }}>
+              <ArgonBox display="flex" flexDirection="column">
+                <ArgonTypography  fontWeight="bold" color="white">
+                  Buen Dia {usuario}
+                </ArgonTypography>
+                <ArgonTypography  fontWeight="bold" color="white">
+                  {rut}
+                </ArgonTypography>
             </ArgonBox>
+            
+                
+              </ArgonBox>
 
-           {/*  <ArgonBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small">
-                  <Icon
-                    sx={({ palette: { dark, white } }) => ({
-                      color: light && transparentNavbar ? white.main : dark.main,
-                    })}
-                  >
-                    account_circle
-                  </Icon>
-                  
-                </IconButton>
-              </Link>
-              <IconButton
-                size="small"
-                color={light && transparentNavbar ? "white" : "dark"}
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon>{miniSidenav ? "menu_open" : "menu"}</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                color={light && transparentNavbar ? "white" : "dark"}
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon>settings</Icon>
-              </IconButton>
-              
-              {renderMenu()}
-            </ArgonBox> */}
-          </ArgonBox>
-        )}
-      </Toolbar>
-    </AppBar>
+            
+            </ArgonBox>
+          )}
+        </Toolbar>
+        ) :  ( 
+          <AppBar
+          position={absolute ? "absolute" : navbarType}
+          color="inherit"
+          sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
+        >
+           </AppBar>
+       )}
+      </AppBar>
+    
+    
   );
 }
 
