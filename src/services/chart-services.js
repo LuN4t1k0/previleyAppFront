@@ -169,10 +169,15 @@ chartServices.getCountMoras = async () => {
     return data;
 };
 
-chartServices.getCountPagosExceso = async () => {
-    const {data} = await jwtAuthAxios.get("/pagex/total-pagado/11111111-1");
+chartServices.getCountPagosExceso = async (Empresas) => {
+    Empresas = Empresas.split(",")
+    const Pagex = [];
+    for( let empresa of Empresas ) {
+        const {data} = await jwtAuthAxios.get("/pagex/total-pagado/" + empresa);
+        Pagex.push(data);
+    }
     //console.log(data);
-    return data;
+    return Pagex;
 };
 
 chartServices.getAllCharts = async (Empresas) => {
@@ -185,8 +190,8 @@ chartServices.getAllCharts = async (Empresas) => {
         charts.push({licencias: response.data});
         response = await jwtAuthAxios.get("/moraPresunta/total/" + empresa);
         charts.push({moraPresunta: response.data});
-        response = await jwtAuthAxios.get("/pagex/total-pagado/" + empresa);
-        charts.push({pagex: response.data});
+        /* response = await jwtAuthAxios.get("/pagex/total-pagado/" + empresa);
+        charts.push({pagex: response.data}); */
         console.log("ALOOOO ", charts)
     
     

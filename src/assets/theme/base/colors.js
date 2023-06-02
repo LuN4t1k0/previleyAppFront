@@ -97,6 +97,11 @@ const colors = {
     900: "#212529",
   },
 
+  green: {
+    main: "#00B050",
+    focus: "#00B050",
+  },
+
   gradients: {
     grey: {
       main: "#f8f9fa",

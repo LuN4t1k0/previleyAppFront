@@ -43,7 +43,7 @@ import {
   navbar,
   navbarContainer,
   navbarRow,
-  navbarIconButton,
+  
   navbarDesktopMenu,
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
@@ -186,9 +186,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </ArgonBox> */}
               <ArgonBox sx={{ display: { xs: "none", md: "flex" } }}>
               <ArgonBox display="flex" flexDirection="column">
-                <ArgonTypography  fontWeight="bold" color="white">
+                {/* <ArgonTypography  fontWeight="bold" color="white">
                   Buen Dia {usuario}
-                </ArgonTypography>
+                </ArgonTypography> */}
                 <ArgonTypography  fontWeight="bold" color="white">
                   {rut}
                 </ArgonTypography>

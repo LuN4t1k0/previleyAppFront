@@ -43,10 +43,13 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Moras from "layouts/moras"
+import Pagex from "layouts/pagex"
+import LogoutPage from "layouts/logout";
 
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
+
 
 const routes = [
   {
@@ -76,6 +79,26 @@ const routes = [
       <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-credit-card" />
     ),
     component: <Moras />,
+  },
+  {
+    type: "route",
+    name: "Pagos en Exceso",
+    key: "Pagos_en_Exceso",
+    route: "/pagex",
+    icon: (
+      <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-credit-card" />
+    ),
+    component: <Pagex />,
+  },
+  {
+    type: "route",
+    name: "Sign Out",
+    key: "sign-out",
+    route: "/sign-out",
+    icon: (
+      <ArgonBox component="i" color="danger" fontSize="14px" className="ni ni-button-power" />
+    ),
+    component: <LogoutPage />,
   },
   {
     type: "route",

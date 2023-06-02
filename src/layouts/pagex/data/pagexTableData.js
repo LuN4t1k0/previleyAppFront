@@ -46,11 +46,8 @@ function Function({ empresa, rutEmpresa }) {
 
 function DeterminateColor(color) {
   
-  if (color == "Resuelto") {
+  if (color == "pagado") {
     return "success";
-  
-  } else if (color == "Cerrado") {
-    return "warning";
   }
   return "primary";
   
@@ -61,56 +58,61 @@ async function createRows(datos) {
   datos.forEach((element) => {
     rows.push({      
       Empleado: <Empleado image={team2} nombre={element.nombreCompleto} rut={element.empleadoRut}  />,
-      'Rut-Empresa': <Function empresa={element.entidad} rutEmpresa={element.empresaRut} />,
+      "Empresa": <Function empresa={element.entidad} rutEmpresa={element.empresaRut} />,
       "Monto Nominal": (
         <ArgonTypography variant="caption" color="primary" fontWeight="medium">
             {element.montoNominal}
         </ArgonTypography>
         ),
-        "Monto Actualizado": (
+        "Monto": (
           <ArgonTypography variant="caption" color="primary" fontWeight="medium">
-            {element.montoActualizado}
+            {element.monto}
           </ArgonTypography>
         ),
-        "Estado Deuda": (
-            <ArgonBadge variant="gradient" badgeContent={element.estadoDeuda} color={DeterminateColor(element.estadoDeuda)} size="xs" container />
-        ),
-        "Estado Avance": (
-            <ArgonBadge variant="gradient" badgeContent={element.estadoAvance} color={DeterminateColor(element.estadoAvance)} size="xs" container />
-           
+        "Pagado": (
+            <ArgonTypography variant="caption" color="primary" fontWeight="medium">
+              {element.pagado}
+            </ArgonTypography>
           ),
-        Abogado: (
-        <ArgonTypography variant="caption" color="primary" fontWeight="medium">
-            {element.abogadoAsignado}
-        </ArgonTypography>
-        ),
+          "Recuperado": (
+            <ArgonTypography variant="caption" color="primary" fontWeight="medium">
+              {element.recuperado}
+            </ArgonTypography>
+          ),
+        "Estado": (
+            <ArgonBadge variant="gradient" badgeContent={element.estado} color={DeterminateColor(element.estado)} size="xs" container />
+        )
+        
+       
     });
   });
   return rows;
 }
     
 
-const morasTableData = async (datos) => {
-  const allTableData = [];
-  const Columns = [
-    { name: "Empleado", align: "left" },
-    { name: "Rut-Empresa", align: "left" },
-    { name: "Monto Nominal", align: "center" },
-    { name: "Monto Actualizado", align: "center" },
-    { name: "Estado Deuda", align: "center" },
-    { name: "Estado Avance", align: "center" },
-    { name: "Abogado", align: "center" },
-  ];
-  datos.map(async (item) => {
-    allTableData.push({
-      Columns,
-      Rows: await createRows(item)
+const pagexTableData = async (datos) => {
+    console.log("LLEGA ESTO ", datos)
+    const allTableData = [];
+    const Columns = [
+      { name: "Empleado", align: "left" },
+      { name: "Empresa", align: "left" },
+      
+      { name: "Monto", align: "center" },
+      { name: "Pagado", align: "center" },
+      { name: "Recuperado", align: "center" },
+      { name: "Estado", align: "center" },
+    ]
+    datos.map(async (item) => {
+      allTableData.push({
+        Columns,
+        Rows: await createRows(item)
+      })
+  
     })
-
-  })
-  console.log("allTableData", allTableData)
-  return allTableData;
+    console.log("allTableData", allTableData)
+    return allTableData;
 };
 
 
-export default morasTableData;
+
+export default pagexTableData;

@@ -13,6 +13,7 @@ import team4 from "assets/images/team-4.jpg";
 
 
 
+
 function Empleado({ image, folio, rut }) {
   return (
     <ArgonBox display="flex" alignItems="center" px={1} py={0.5}>
@@ -61,6 +62,7 @@ function DeterminateColor(color) {
 async function createRows(datos) {
   let rows = [];
   datos.forEach((element) => {
+    console.log("Antes del push de rows "+element)
     rows.push({      
       Empleado: <Empleado image={team2} folio={element.folio} rut={element.empleadoRut}  />,
       Especialidad: <Function especialidad={element.especialidad} tipoLicencia={element.tipoLicencia} />,
@@ -90,158 +92,25 @@ async function createRows(datos) {
     
 
 const authorsTableData = async (datos) => {
-  return {
-    Columns: [
-      { name: "Empleado", align: "left" },
-      { name: "Especialidad", align: "left" },
-      { name: "Estado", align: "center" },
-      { name: "Fecha Inicio", align: "center" },
-      { name: "Fecha Termino", align: "center" },
-      { name: "Institucion", align: "center" },
-    ],
-    Rows: await createRows(datos)
+  const allTableData = []
+  const Columns = [
+    { name: "Empleado", align: "left" },
+    { name: "Especialidad", align: "left" },
+    { name: "Estado", align: "center" },
+    { name: "Fecha Inicio", align: "center" },
+    { name: "Fecha Termino", align: "center" },
+    { name: "Institucion", align: "center" },
+  ]
+  datos.map(async (item) => {
+    console.log("item", item)
+    allTableData.push({
+      Columns,
+      Rows: await createRows(item)
+    })
 
-    /* rows: [
-      {
-        author: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
-        function: <Function job="Manager" org="Organization" />,
-        status: (
-          <ArgonBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
-        ),
-        employed: (
-          <ArgonTypography variant="caption" color="secondary" fontWeight="medium">
-            23/04/18
-          </ArgonTypography>
-        ),
-        action: (
-          <ArgonTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-          >
-            Edit
-          </ArgonTypography>
-        ),
-      },
-      {
-        author: <Author image={team3} name="Alexa Liras" email="alexa@creative-tim.com" />,
-        function: <Function job="Programator" org="Developer" />,
-        status: (
-          <ArgonBadge variant="gradient" badgeContent="offline" color="secondary" size="xs" container />
-        ),
-        employed: (
-          <ArgonTypography variant="caption" color="secondary" fontWeight="medium">
-            11/01/19
-          </ArgonTypography>
-        ),
-        action: (
-          <ArgonTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-          >
-            Edit
-          </ArgonTypography>
-        ),
-      },
-      {
-        author: <Author image={team4} name="Laurent Perrier" email="laurent@creative-tim.com" />,
-        function: <Function job="Executive" org="Projects" />,
-        status: (
-          <ArgonBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
-        ),
-        employed: (
-          <ArgonTypography variant="caption" color="secondary" fontWeight="medium">
-            19/09/17
-          </ArgonTypography>
-        ),
-        action: (
-          <ArgonTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-          >
-            Edit
-          </ArgonTypography>
-        ),
-      },
-      {
-        author: <Author image={team3} name="Michael Levi" email="michael@creative-tim.com" />,
-        function: <Function job="Programator" org="Developer" />,
-        status: (
-          <ArgonBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
-        ),
-        employed: (
-          <ArgonTypography variant="caption" color="secondary" fontWeight="medium">
-            24/12/08
-          </ArgonTypography>
-        ),
-        action: (
-          <ArgonTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-          >
-            Edit
-          </ArgonTypography>
-        ),
-      },
-      {
-        author: <Author image={team2} name="Richard Gran" email="richard@creative-tim.com" />,
-        function: <Function job="Manager" org="Executive" />,
-        status: (
-          <ArgonBadge variant="gradient" badgeContent="offline" color="secondary" size="xs" container />
-        ),
-        employed: (
-          <ArgonTypography variant="caption" color="secondary" fontWeight="medium">
-            04/10/21
-          </ArgonTypography>
-        ),
-        action: (
-          <ArgonTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-          >
-            Edit
-          </ArgonTypography>
-        ),
-      },
-      {
-        author: <Author image={team4} name="Miriam Eric" email="miriam@creative-tim.com" />,
-        function: <Function job="Programtor" org="Developer" />,
-        status: (
-          <ArgonBadge variant="gradient" badgeContent="offline" color="secondary" size="xs" container />
-        ),
-        employed: (
-          <ArgonTypography variant="caption" color="secondary" fontWeight="medium">
-            14/09/20
-          </ArgonTypography>
-        ),
-        action: (
-          <ArgonTypography
-            component="a"
-            href="#"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-          >
-            Edit
-          </ArgonTypography>
-        ),
-      },
-    ], */
-  };
+  })
+  console.log("allTableData", allTableData)
+  return allTableData;
 };
 
 

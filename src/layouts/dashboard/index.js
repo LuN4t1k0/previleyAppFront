@@ -17,7 +17,7 @@ Coded by www.creative-tim.com
 // @mui material components
 import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { CircularProgress, Icon, Grid, Tabs, Tab } from "@mui/material";
+import { CircularProgress, Icon, Grid, Tabs, Tab, Card } from "@mui/material";
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
@@ -76,8 +76,6 @@ function Default() {
   const { size } = typography;
   const [Loading, setLoading] = useState(true);
   const [charts, setCharts] = useState([]);
-  const [licenciasData, setlicenciasData] = useState([]);
-  const [morasData, setMoraData] = useState([]);
   const [pagex, setPagex] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [empresas, setEmpresas] = useState([]);
@@ -109,8 +107,11 @@ function Default() {
         console.log("entro a getCharts")
         let empr = sessionStorage.getItem("rutEmpresas");
         const charts = await chartServices.getAllCharts(empr);
+        const pagexData = await chartServices.getCountPagosExceso(empr);
         console.log("todos LOS CHARTS ", charts)
+        console.log("pagexData ", pagexData)
         setCharts(charts);
+        setPagex(pagexData);
         /* setlicenciasData(charts[0]);
         setMoraData(charts[1]);
         setPagex(charts[2]); */
@@ -149,7 +150,7 @@ function Default() {
         <ArgonBox py={3}>
             <Tabs value={activeTab} onChange={handleChangeTab}>
             {empresas.map((empresa, index) => (
-              <Tab key={index} label={empresa.nombre} />
+              <Tab key={index} label={empresa.rut} />
             ))}
           </Tabs>
           {empresas.map((empresa, index) => (
@@ -160,7 +161,7 @@ function Default() {
                 
                     <Grid container spacing={3} mb={3}>
                     
-                    <Grid item xs={12} lg={5}>
+                    <Grid item xs={12} lg={4}>
                       
                       <PieChart
                           title="Licencias Medicas"
@@ -176,7 +177,7 @@ function Default() {
                         
                         />
                       </Grid>
-                      <Grid item xs={12} lg={5}>
+                      <Grid item xs={12} lg={4}>
                       
                       <PieChart
                           title="Moras"
@@ -192,22 +193,41 @@ function Default() {
                         
                         />
                       </Grid>
-                      <Grid item xs={12} lg={5}>
-                      
-                      <PieChart
-                          title="Pagos en Exceso"
-                          tooltip={true}
-                          tooltipStyle={{
-                            background: "white",
-                            color: "black",
-                            borderRadius: "4px",
-                            border: "1px solid gray",
-                            padding: "8px",
-                          }}
-                          chart={charts[index][2]}
-                        
-                        />
+                      <Grid item xs={12} lg={4}>
+                      <Card style={{ borderRadius: "8px", padding: "10px" }}>
+                        <ArgonTypography variant="h6" color="textPrimary" mb={3}> Pagos en Exceso </ArgonTypography>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <div
+                            style={{
+                              width: "20px",
+                              height: "20px",
+                              backgroundColor: "green",
+                              marginRight: "10px",
+                            }}
+                          ></div>
+                          <span>Total pagadas: {pagex[index].totalPagado}</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
+                          <div
+                            style={{
+                              width: "20px",
+                              height: "20px",
+                              backgroundColor: "red",
+                              marginRight: "10px",
+                            }}
+                          ></div>
+                          <span>Total Pendientes: {pagex[index].totalPendiente}</span>
+                        </div>
+                        </Card>
                       </Grid>
+
+
+
+
+
+
+
+
                     </Grid>
                     </TabPanel>
           ))}

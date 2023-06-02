@@ -15,9 +15,8 @@ Coded by www.creative-tim.com
 import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 // @mui material components
-import { estadoLicenciaMedica } from "utils/enum";
-import {InputLabel, Card, MenuItem, FormControl, Select, CircularProgress, Tabs, Tab, TablePagination  } from '@mui/material';
 
+import {InputLabel, Card, MenuItem, FormControl, Select, CircularProgress, Tabs, Tab, TablePagination } from '@mui/material';
 import { saveAs } from 'file-saver';
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
@@ -29,11 +28,12 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
-import licenciasServices from "services/licencias-services";
+import pagexServices from 'services/pagex-services';
 import userServices from "services/user-services";
 
 // Data
-import authorsTableData from "./data/authorsTableData";
+
+import pagexTableData from './data/pagexTableData';
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
 function TabPanel(props) {
@@ -61,13 +61,13 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-
 function Tables() {
   
-
+  //const { columns, rows } = authorsTableData;
+ // const { columns: prCols, rows: prRows } = projectsTableData;
+  //const [datos, setDatos] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
-	
+  //const [rows, setRows] = useState([]);	
   const [licenciasData, setlicenciasData] = useState([]);
   const [Loading, setLoading] = useState(true);
   const [estadoSelect, setEstadoSelect] = React.useState('');
@@ -76,16 +76,15 @@ function Tables() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [totalPages, setTotalPages] = useState(0);
   const [paginatedLicenciasData, setPaginatedLicenciasData] = useState([]);
-  const [estadosLicencias, setEstadosLicencias] = useState([]);
-
+  const [estadosPagex, setEstadosPagex] = useState([]);
 
   const handleSubmit = async (event) => {
     try {    
       event.preventDefault();
       setLoading(true);
-      const {data} = await licenciasServices.filterByEstado(estadoSelect, empresas[activeTab].rut);
+      const {data} = await pagexServices.filterByEstado(estadoSelect, empresas[activeTab].rut);
       console.log("DATA FILTRADA", data)
-      const dataTable = await authorsTableData([data]); 
+      const dataTable = await pagexTableData([data]); 
       console.log("dataTable",dataTable)
       console.log("licenseData-activeTab",licenciasData[activeTab])
       
@@ -118,15 +117,11 @@ function Tables() {
     }
   };
 
+
   const handleChangePage = (event, newPage) => {
     // Verificar si newPage está dentro del rango válido
     if (newPage >= 0 && newPage < totalPages) {
       setPage(newPage);
-  
-      const startIndex = newPage * rowsPerPage;
-      const endIndex = startIndex + rowsPerPage;
-      const paginatedData = licenciasData[activeTab].Rows.slice(startIndex, endIndex);
-      setPaginatedLicenciasData(paginatedData);
     }
   };
   
@@ -135,6 +130,7 @@ function Tables() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
 
   const handleChange = (event) => {
     setEstadoSelect(event.target.value);
@@ -162,20 +158,22 @@ function Tables() {
           setEmpresas(data1);
           
           console.log("empresas ", empr);
-          const data = await licenciasServices.getAllLicencias(empr);
+          const data = await pagexServices.getAllPagex(empr);
           console.log("data ", data);        
-          const dataTable = await authorsTableData(data);
+          const dataTable = await pagexTableData(data);
+          console.log("dataTable ", dataTable);
           setlicenciasData(dataTable);
-          
+
           setTotalPages(Math.ceil(dataTable[activeTab].Rows.length / rowsPerPage)); // Calcula totalPages después de actualizar los datos
           const startIndex = page * rowsPerPage;
           const endIndex = startIndex + rowsPerPage;
           const paginatedData = dataTable[activeTab].Rows.slice(startIndex, endIndex);
           setPaginatedLicenciasData(paginatedData);
 
-          const estados = await licenciasServices.getEstados();
+          const estados = await pagexServices.getEstados();
           console.log("estados ", estados);
-          setEstadosLicencias(estados);
+          setEstadosPagex(estados);
+          
         } catch (error) {
           console.log(error);
         } finally {
@@ -204,15 +202,13 @@ function Tables() {
               ) : (
       <ArgonBox py={3}>
       <ArgonBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <ArgonTypography variant="h6">Licencias Medicas</ArgonTypography>
+              <ArgonTypography variant="h6">Pagos en Exceso</ArgonTypography>
               
           </ArgonBox>
       <Tabs value={activeTab} onChange={handleChangeTab}>
             {empresas.map((empresa, index) => (
               <Tab key={index} label={empresa.rut} />
-            ))
-            }
-            
+            ))}
           </Tabs>
           {empresas.map((empresa, index) => (
               <TabPanel key={index} value={activeTab} index={index}>
@@ -226,26 +222,26 @@ function Tables() {
               
                 <FormControl sx={{ m: 1,minWidth: 200}}>
                 
-                  <InputLabel id="demo-simple-select-autowidth-label">Estado Licencia</InputLabel>
+                  <InputLabel id="demo-simple-select-autowidth-label">Estado Pagex</InputLabel>
                     <Select
                       
                       value={estadoSelect}
                       onChange={handleChange}
                       autoWidth
-                      label="Estado Licencia"
+                      label="Estado Pagex"
                     >
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      {estadosLicencias.map((estado, index) => (
+                      {estadosPagex.map((estado, index) => (
                         <MenuItem key={index} value={estado}>{estado}</MenuItem>
                       ))}
-                      
                     </Select>
-                          
+                  </FormControl>
+                            
                 
                   
-                </FormControl>
+             
                 <ArgonButton type="submit" color="secondary" size="medium" sx={{ m: 1,minWidth: 120}}>
                   Filtrar
                 </ArgonButton>
@@ -256,20 +252,20 @@ function Tables() {
               </div>
               
             </ArgonBox>
-            <ArgonButton 
-                  color="green" 
-                  variant="contained"
-                  size="medium" 
-                  sx={{ m: 1,
-                        minWidth: 120,
-                        position: 'absolute',
-                        
+   <ArgonButton 
+ color="green" 
+ variant="contained"
+ size="medium" 
+ sx={{ m: 1,
+       minWidth: 120,
+       position: 'absolute',
+       
 
-                        right: 0,}}
-                  onClick={handleDownload}>
-                    Descargar Excel
-                  </ArgonButton>
-          </ArgonBox>
+       right: 0,}}
+ onClick={handleDownload}>
+   Descargar Excel
+ </ArgonButton>
+         </ArgonBox>
             
             <ArgonBox
               sx={{
@@ -280,10 +276,10 @@ function Tables() {
                   },
                 },
               }}
-            > 
+            >
               
-                <Table columns={licenciasData[activeTab].Columns} rows={paginatedLicenciasData} />
-                <TablePagination
+              <Table columns={licenciasData[activeTab].Columns} rows={paginatedLicenciasData} />
+              <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
                   count={licenciasData[index].Rows.length}
